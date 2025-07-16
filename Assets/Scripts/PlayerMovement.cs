@@ -11,11 +11,17 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 10f;
     public Transform groundCheck;
     public float groundCheckRadius = 0.2f;
-
+    private Rigidbody2D rb;
+    private Vector2 movementInput;
 /*    public LayerMask groundLayer;
     private Vector2 moveInput;*/
     [Header("INPUT AND MORE")]
-    public CharacterController characterController;
+    
+    // Uncomment when fix
+    //public CharacterController characterController;
+    
+    
+    
     //PlAYER INPUT
     PlayerInput playerInput;
     //ANIMATION
@@ -29,8 +35,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        rb = GetComponent<Rigidbody2D>(); 
+
         playerInput = new PlayerInput();
-        characterController = GetComponent<CharacterController>();
+        
+        //characterController = GetComponent<CharacterController>();
+        
         animator = GetComponent<Animator>();
         // PLAYER WALK INPUT SYSTEM 
         playerInput.PlayerController.Walk.started += OnWalk;
@@ -61,8 +71,17 @@ public class PlayerMovement : MonoBehaviour
 *//*            jumpPressed = false;
         }*/
     }
-    void OnWalk(InputAction.CallbackContext context)
+
+    // Called every physics frame
+    private void FixedUpdate()
     {
+        rb.velocity = movementInput * moveSpeed;
+    }
+
+    public void OnWalk(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
+
         Vector2 input = context.ReadValue<Vector2>();
         if (input.y > 0)
         Debug.Log("W pressed (up)");
