@@ -45,6 +45,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeUniverse"",
+                    ""type"": ""Button"",
+                    ""id"": ""6ca5c2dd-bc83-4340-95f8-31f67b446305"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -113,6 +122,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7f18e90-2169-4a6c-8e64-3e4c523a69d3"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeUniverse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -123,6 +143,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerController = asset.FindActionMap("PlayerController", throwIfNotFound: true);
         m_PlayerController_Walk = m_PlayerController.FindAction("Walk", throwIfNotFound: true);
         m_PlayerController_Jump = m_PlayerController.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerController_ChangeUniverse = m_PlayerController.FindAction("ChangeUniverse", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -191,12 +212,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private List<IPlayerControllerActions> m_PlayerControllerActionsCallbackInterfaces = new List<IPlayerControllerActions>();
     private readonly InputAction m_PlayerController_Walk;
     private readonly InputAction m_PlayerController_Jump;
+    private readonly InputAction m_PlayerController_ChangeUniverse;
     public struct PlayerControllerActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerControllerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Walk => m_Wrapper.m_PlayerController_Walk;
         public InputAction @Jump => m_Wrapper.m_PlayerController_Jump;
+        public InputAction @ChangeUniverse => m_Wrapper.m_PlayerController_ChangeUniverse;
         public InputActionMap Get() { return m_Wrapper.m_PlayerController; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -212,6 +235,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @ChangeUniverse.started += instance.OnChangeUniverse;
+            @ChangeUniverse.performed += instance.OnChangeUniverse;
+            @ChangeUniverse.canceled += instance.OnChangeUniverse;
         }
 
         private void UnregisterCallbacks(IPlayerControllerActions instance)
@@ -222,6 +248,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @ChangeUniverse.started -= instance.OnChangeUniverse;
+            @ChangeUniverse.performed -= instance.OnChangeUniverse;
+            @ChangeUniverse.canceled -= instance.OnChangeUniverse;
         }
 
         public void RemoveCallbacks(IPlayerControllerActions instance)
@@ -243,5 +272,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     {
         void OnWalk(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnChangeUniverse(InputAction.CallbackContext context);
     }
 }
