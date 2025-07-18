@@ -67,6 +67,14 @@ public class SimplePlayerMovement : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         horizontalMovement = context.ReadValue<Vector2>().x;
+        if(context.performed)
+        {
+/*            Debug.Log(" Walking working");
+*/        }
+        if (context.canceled)
+        {
+/*            Debug.Log(" Walking stopped");
+*/        }
     }
 
     public void Jump(InputAction.CallbackContext context)
@@ -89,11 +97,10 @@ public class SimplePlayerMovement : MonoBehaviour
     // checks the ground,
     private void GroundCheck() 
     {
-        if (Physics2D.OverlapBox(groundCheckPos.position, groundChecksize, 0 , GroundLayer))
+        if (Physics2D.OverlapBox(groundCheckPos.position, groundChecksize, 0, GroundLayer))
         {
-            jumpsReamaning = maxjumps;         
+            jumpsReamaning = maxjumps;
         }
-        
     }
 
     public void ChangeUniverse(InputAction.CallbackContext context)
@@ -124,14 +131,12 @@ public class SimplePlayerMovement : MonoBehaviour
         if (blackshade.activeSelf && !whiteshade.activeSelf)
         {
             //CHANGE TO WHITE
-            Debug.Log("Can change to white");
             changetoblack = false;
             changetowhite = true;
         }
         if (whiteshade.activeSelf && !blackshade.activeSelf)
         {
             // CHANGE TO BLACK
-            Debug.Log("Can change to black");
             changetowhite = false;
             changetoblack = true;
 
