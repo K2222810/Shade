@@ -17,6 +17,8 @@ public class SimplePlayerMovement : MonoBehaviour
 
     [Header("Jumping")]
     public float jumpPower = 10f;
+    public int maxjumps = 2;
+    int jumpsReamaning; 
 
     [Header("SHADE CHARACTER")]
     public GameObject whiteshade;
@@ -26,11 +28,40 @@ public class SimplePlayerMovement : MonoBehaviour
     public GameObject BlackUniverse;
     public GameObject WhiteUniverse;
 
+    [Header("GroundCheck")]
+    public Transform groundCheckPos;
+    public Vector2 groundChecksize = new Vector2(0.5f, 0.05f);
+    public LayerMask GroundLayer;
+
+
+    [Header("Gravity")]
+    public float baseGravity = 2f;
+    public float maxFallSpeed = 18f;
+    public float fallSpeedMultiplier = 2f;
 
     void Update()
     {
         rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
         ChangeUniversecontext();
+        
+        // It chekcs if there is any ground in the floor,if not the player doesnt jump again(unles it has double jump).
+        GroundCheck();
+        //  Applies a more realistic gravity to the player.
+        Gravity();
+    }
+
+    private void Gravity()
+    {
+        if (rb.velocity.y < 0)
+        {
+            rb.gravityScale = baseGravity * fallSpeedMultiplier;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -maxFallSpeed));
+        }
+        else 
+        {
+            rb.gravityScale = baseGravity;
+         
+        }
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -40,11 +71,31 @@ public class SimplePlayerMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (jumpsReamaning > 0)
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            if (context.performed)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+                jumpsReamaning--; 
+            }
+            else if (context.canceled)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+                jumpsReamaning--;
+            }
         }
     }
+
+    // checks the ground,
+    private void GroundCheck() 
+    {
+        if (Physics2D.OverlapBox(groundCheckPos.position, groundChecksize, 0 , GroundLayer))
+        {
+            jumpsReamaning = maxjumps;         
+        }
+        
+    }
+
     public void ChangeUniverse(InputAction.CallbackContext context)
     {
         if (context.performed && changetowhite)
@@ -85,6 +136,14 @@ public class SimplePlayerMovement : MonoBehaviour
             changetoblack = true;
 
         }
+    }
+
+
+    // A rentagle that represent the collison of the ground check
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(groundCheckPos.position, groundChecksize);
     }
 
 }
