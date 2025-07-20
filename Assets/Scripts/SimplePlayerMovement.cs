@@ -10,6 +10,10 @@ public class SimplePlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     private bool changetoblack = false;
     private bool changetowhite = false;
+    public bool shadeiswhite = false;
+    public bool shadeisblack = false;
+    public bool worldisblack = false;
+    public bool worldiswhite = false;
 
     [Header("Movement")]
     public float moveSpeed = 5f;
@@ -113,6 +117,11 @@ public class SimplePlayerMovement : MonoBehaviour
             //UNIVERSE
             WhiteUniverse.SetActive(false);
             BlackUniverse.SetActive(true);
+            //BOOL FOR THE OTHER SCRIPT
+            shadeiswhite = true;
+            worldisblack = true;
+            shadeisblack = false;
+            worldiswhite = false;
 
         }
         if (context.performed && changetoblack)
@@ -123,6 +132,11 @@ public class SimplePlayerMovement : MonoBehaviour
             //UNIVERSE
             BlackUniverse.SetActive(false);
             WhiteUniverse.SetActive(true);
+            //BOOL FOR THE OTHER SCRIPT
+            shadeiswhite = false;
+            worldisblack = false;
+            shadeisblack = true;
+            worldiswhite = true;
 
         }
     }
