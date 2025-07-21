@@ -8,6 +8,9 @@ using UnityEditor.Animations;
 public class SimplePlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
+    bool isFacingRight = true;  
+
+    //Shade Colors
     private bool changetoblack = false;
     private bool changetowhite = false;
     public bool shadeiswhite = false;
@@ -22,8 +25,8 @@ public class SimplePlayerMovement : MonoBehaviour
     [Header("Jumping")]
     public float jumpPower = 10f;
     public int maxjumps = 2;
-    int jumpsReamaning; 
-
+    int jumpsReamaning;
+    
     [Header("SHADE CHARACTER")]
     public GameObject whiteshade;
     public GameObject blackshade;
@@ -36,22 +39,35 @@ public class SimplePlayerMovement : MonoBehaviour
     public Transform groundCheckPos;
     public Vector2 groundChecksize = new Vector2(0.5f, 0.05f);
     public LayerMask GroundLayer;
+    bool isGrounded;
 
+    [Header("WallCheck")]
+    public Transform wallCheckPos;
+    public Vector2 wallChecksize = new Vector2(0.49f, 0.03f);
+    public LayerMask wallLayer;
+
+    [Header("WallMovement")]
+    public float wallSlideSpeed = 2;
+    bool isWallSliding;
 
     [Header("Gravity")]
     public float baseGravity = 2f;
     public float maxFallSpeed = 18f;
     public float fallSpeedMultiplier = 2f;
 
+
     void Update()
     {
         rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
         ChangeUniversecontext();
-        
         // It chekcs if there is any ground in the floor,if not the player doesnt jump again(unles it has double jump).
         GroundCheck();
         //  Applies a more realistic gravity to the player.
         Gravity();
+        // The character flips if facing the right direction the player moves, the void function 
+        flip();
+
+        processWallSlide();
     }
 
     private void Gravity()
@@ -104,6 +120,43 @@ public class SimplePlayerMovement : MonoBehaviour
         if (Physics2D.OverlapBox(groundCheckPos.position, groundChecksize, 0, GroundLayer))
         {
             jumpsReamaning = maxjumps;
+            isGrounded = true;
+        }
+        else 
+        {
+            isGrounded = false;
+        }
+    }
+
+    private bool WallCheck()
+    {
+        return Physics2D.OverlapBox(wallCheckPos.position, wallChecksize,0, wallLayer); 
+    }
+
+    private void processWallSlide()
+    {   //not grounded & On a wall & movement != 0
+        if(!isGrounded & WallCheck() & horizontalMovement != 0)
+        {
+            isWallSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -wallSlideSpeed));
+        }
+        else 
+        {
+            isWallSliding = false; 
+        } 
+    }
+
+    private void flip()
+    {
+        if (isFacingRight && horizontalMovement < 0 || isFacingRight && horizontalMovement > 0)
+        {
+            isFacingRight = !isFacingRight;
+            Vector3 ls = transform.localScale;
+            ls.x *= -1f;
+            transform.localScale = ls;
+
+
+
         }
     }
 
@@ -156,13 +209,4 @@ public class SimplePlayerMovement : MonoBehaviour
 
         }
     }
-
-
-    // A rentagle that represent the collison of the ground check
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawCube(groundCheckPos.position, groundChecksize);
-    }
-
 }
