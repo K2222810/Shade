@@ -50,6 +50,14 @@ public class SimplePlayerMovement : MonoBehaviour
     public float wallSlideSpeed = 2;
     bool isWallSliding;
 
+    //wall jumping
+
+    bool isWallJumping;
+    float wallJumpDirection;
+    float wallJumptime = 0.5f;
+    float wallJumpTimer;
+    public Vector2 wallJumpPower = new Vector2(5f, 10f);
+
     [Header("Gravity")]
     public float baseGravity = 2f;
     public float maxFallSpeed = 18f;
@@ -58,7 +66,7 @@ public class SimplePlayerMovement : MonoBehaviour
 
     void Update()
     {
-        rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
+        
         ChangeUniversecontext();
         // It chekcs if there is any ground in the floor,if not the player doesnt jump again(unles it has double jump).
         GroundCheck();
@@ -68,6 +76,15 @@ public class SimplePlayerMovement : MonoBehaviour
         flip();
 
         processWallSlide();
+
+        processWallJump();
+
+        if (!isWallJumping)
+        {
+            rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
+            flip();
+        }
+
     }
 
     private void Gravity()
@@ -107,10 +124,30 @@ public class SimplePlayerMovement : MonoBehaviour
                 jumpsReamaning--; 
             }
             else if (context.canceled)
-            {
+            {   
+                //light tap of jump button = half the height
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
                 jumpsReamaning--;
             }
+        }
+
+        //wall jump
+        if (context.performed && wallJumpTimer > 0f)
+        { 
+            isWallJumping = true;
+            rb.velocity = new Vector2(wallJumpDirection * wallJumpPower.x, wallJumpPower.y); // jump away from wall
+            wallJumpTimer = 0;
+
+            //force flip
+            if (transform.localScale.x != wallJumpDirection) 
+            {
+                isFacingRight = !isFacingRight;
+                Vector3 ls = transform.localScale;
+                ls.x *= -1f;
+                transform.localScale = ls;
+            }
+            Invoke(nameof(CancelWallJump), wallJumptime + 0.1f);
+        
         }
     }
 
@@ -146,17 +183,35 @@ public class SimplePlayerMovement : MonoBehaviour
         } 
     }
 
+    private void processWallJump()
+    {
+        if (isWallSliding)
+        {
+            isWallSliding = false;
+            wallJumpDirection = -transform.localScale.x;
+            wallJumpTimer = wallJumptime;
+
+            CancelInvoke(nameof(CancelWallJump));
+        }
+        else if (wallJumpTimer > 0f)
+        { 
+            wallJumpTimer -= Time.deltaTime;    
+        }
+    }
+
+    private void CancelWallJump()
+    { 
+        isWallJumping = false;
+    } 
+
     private void flip()
     {
-        if (isFacingRight && horizontalMovement < 0 || isFacingRight && horizontalMovement > 0)
+        if (isFacingRight && horizontalMovement < 0 || !isFacingRight && horizontalMovement > 0)
         {
             isFacingRight = !isFacingRight;
             Vector3 ls = transform.localScale;
             ls.x *= -1f;
             transform.localScale = ls;
-
-
-
         }
     }
 
