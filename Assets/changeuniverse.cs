@@ -9,15 +9,15 @@ public class changeuniverse : MonoBehaviour
 {
     [SerializeField]SimplePlayerMovement player;
 
-    [SerializeField] private string tagtoCheck = "whiteobstacles";
+    private string tagtoCheck = "whiteobstacles";
+    GameObject obstacles;
     [SerializeField] private string tagtoCheck2 = " ";
     bool foundTaggedchild = false;
-    bool turnoffcolliders = false;
 
+    bool turnoffcolliders2 = false;
     public bool blackuniverse = false;
     void Start()
     {
-     
     }
  
     private void Update()
@@ -27,22 +27,21 @@ public class changeuniverse : MonoBehaviour
             bool found = CheckEachChildren(transform);
             if (!found)
             {
-                Debug.Log("NO with tag" + tagtoCheck);
+                Debug.Log("No with tag " + tagtoCheck);
             }
         }
-    }
-    private void nocolliders()
-    {
-        if(turnoffcolliders)
-        {
-            Debug.Log("YES I AM ON");
-        }
+        worldtransp();
     }
     private void worldtransp()
     {
-        if (player.worldisblack)
+    
+            Debug.Log("hello sir");
+            GameObject whiteObstacles = GameObject.FindGameObjectWithTag("whiteobstacles");
+            TilemapCollider2D whiteObstaclesCollider = whiteObstacles.GetComponent<TilemapCollider2D>();
+            whiteObstaclesCollider.enabled = false;
+        
+        /*if (player.worldisblack)
         {
-  /*          GameObject whiteObstacles = GameObject.FindGameObjectWithTag("whiteobstacles");
             if (whiteObstacles)
             {
                 Debug.Log("HEllo there");
@@ -51,27 +50,10 @@ public class changeuniverse : MonoBehaviour
             {
                 whiteObstacles.SetActive(true);
                 TilemapCollider2D whiteObstaclesCollider = whiteObstacles.GetComponent<TilemapCollider2D>();
-                whiteObstaclesCollider.enabled = true;
-            }*/
-        }
-    }
-    /*private void checktag()
-    {
-        bool foundTaggedChild = false;
-        foreach (Transform child in transform)
-        {
-            if (child.CompareTag(tagtoCheck))
-            {
-                foundTaggedChild = true;
-                Debug.Log("Found a child with tag " + tagtoCheck + "-->" + child.name);
             }
-        }
-        if (!foundTaggedChild)
-        {
-            Debug.Log("No children with tag :" + tagtoCheck);
-        }
-    }*/
-   bool CheckEachChildren(Transform parent) // its checking each transformer/is similar to GameObject; you can change the "parent" to any other name 
+        }*/
+    }
+    bool CheckEachChildren(Transform parent) // its checking each transformer/is similar to GameObject; you can change the "parent" to any other name 
     {
         foreach (Transform child in parent)
         {
