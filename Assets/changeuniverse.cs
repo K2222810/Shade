@@ -19,39 +19,30 @@ public class changeuniverse : MonoBehaviour
     void Start()
     {
     }
- 
     private void Update()
     {
-        if (player.worldisblack)
+        bool found = CheckEachChildren(transform);
+        if (!found)
         {
-            bool found = CheckEachChildren(transform);
-            if (!found)
-            {
-                Debug.Log("No with tag " + tagtoCheck);
-            }
+            Debug.Log("No with tag " + tagtoCheck);
         }
-        worldtransp();
+        if(player.worldisblack)
+        {
+            worldtransp();
+
+        }
     }
     private void worldtransp()
     {
-    
-            Debug.Log("hello sir");
-            GameObject whiteObstacles = GameObject.FindGameObjectWithTag("whiteobstacles");
-            TilemapCollider2D whiteObstaclesCollider = whiteObstacles.GetComponent<TilemapCollider2D>();
-            whiteObstaclesCollider.enabled = false;
-        
-        /*if (player.worldisblack)
-        {
-            if (whiteObstacles)
+            GameObject[] whiteObstaclesArray = GameObject.FindGameObjectsWithTag("whiteobstacles");
+            foreach (GameObject obstacle in whiteObstaclesArray)
             {
-                Debug.Log("HEllo there");
+                TilemapCollider2D whiteObstaclesCollider = obstacle.GetComponent<TilemapCollider2D>();
+                if (whiteObstaclesCollider != null)
+                {
+                    whiteObstaclesCollider.enabled = false;
+                }
             }
-            if (whiteObstacles)
-            {
-                whiteObstacles.SetActive(true);
-                TilemapCollider2D whiteObstaclesCollider = whiteObstacles.GetComponent<TilemapCollider2D>();
-            }
-        }*/
     }
     bool CheckEachChildren(Transform parent) // its checking each transformer/is similar to GameObject; you can change the "parent" to any other name 
     {
@@ -61,10 +52,12 @@ public class changeuniverse : MonoBehaviour
             {
                 Debug.Log("Found Tagged desccendant: " + child.name);
                 foundTaggedchild = true;
+                // return true
             }
             if (CheckEachChildren(child))
             {
                 foundTaggedchild = true;
+                // return true 
             }
         }
         return foundTaggedchild;
