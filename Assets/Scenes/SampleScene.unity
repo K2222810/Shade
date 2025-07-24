@@ -603,7 +603,6 @@ GameObject:
   m_Component:
   - component: {fileID: 843388936}
   - component: {fileID: 843388935}
-  - component: {fileID: 843388937}
   m_Layer: 0
   m_Name: White Obstacle
   m_TagString: Untagged
@@ -640,21 +639,6 @@ Transform:
   - {fileID: 1137378494}
   m_Father: {fileID: 850355826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &843388937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 843388934}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a69bdca23118a74485a252b19c5d3b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1977528910}
-  tagtoCheck2: ' '
-  blackuniverse: 0
 --- !u!1 &850355825
 GameObject:
   m_ObjectHideFlags: 0
