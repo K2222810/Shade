@@ -485,8 +485,8 @@ GameObject:
   m_Component:
   - component: {fileID: 524726725}
   m_Layer: 0
-  m_Name: Background And Ground Black
-  m_TagString: Untagged
+  m_Name: 'BLACK background and ground '
+  m_TagString: blackuniverse
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -506,7 +506,6 @@ Transform:
   m_Children:
   - {fileID: 1622699341}
   - {fileID: 76188407}
-  - {fileID: 1727098487}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
@@ -685,7 +684,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1977528910}
-  tagtoCheck2: ' '
   blackuniverse: 0
 --- !u!1 &853240549
 GameObject:
@@ -703,7 +701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &853240550
 Transform:
   m_ObjectHideFlags: 0
@@ -784,7 +782,7 @@ GameObject:
   m_Component:
   - component: {fileID: 914487999}
   m_Layer: 0
-  m_Name: Background And Ground White
+  m_Name: WHITE background and ground
   m_TagString: whiteuniverse
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -820,7 +818,7 @@ GameObject:
   - component: {fileID: 1137378495}
   - component: {fileID: 1137378497}
   m_Layer: 3
-  m_Name: Ground
+  m_Name: OB
   m_TagString: whiteobstacles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1085,7 +1083,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1169098778
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1303,8 +1301,8 @@ GameObject:
   - component: {fileID: 1656727829}
   - component: {fileID: 1656727828}
   m_Layer: 3
-  m_Name: Ground
-  m_TagString: Untagged
+  m_Name: OB
+  m_TagString: blackobstacles
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1585,6 +1583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1727098487}
   - component: {fileID: 1727098488}
+  - component: {fileID: 1727098489}
   m_Layer: 0
   m_Name: BLack Obstactle
   m_TagString: Untagged
@@ -1601,12 +1600,12 @@ Transform:
   m_GameObject: {fileID: 1727098486}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.96, y: 2.8997, z: 0}
+  m_LocalPosition: {x: -2.0482001, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1656727827}
-  m_Father: {fileID: 524726725}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!156049354 &1727098488
 Grid:
@@ -1620,6 +1619,20 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!114 &1727098489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727098486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a69bdca23118a74485a252b19c5d3b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1977528910}
+  blackuniverse: 0
 --- !u!1 &1743544404
 GameObject:
   m_ObjectHideFlags: 0
@@ -1914,8 +1927,8 @@ MonoBehaviour:
   moveSpeed: 5
   jumpPower: 10
   maxjumps: 2
-  whiteshade: {fileID: 853240549}
-  blackshade: {fileID: 1169098777}
+  whiteshade: {fileID: 1169098777}
+  blackshade: {fileID: 853240549}
   BlackUniverse: {fileID: 524726724}
   WhiteUniverse: {fileID: 914487998}
   groundCheckPos: {fileID: 1669604858}
@@ -2315,6 +2328,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 619394802}
   - {fileID: 914487999}
-  - {fileID: 850355826}
   - {fileID: 524726725}
+  - {fileID: 850355826}
+  - {fileID: 1727098487}
   - {fileID: 1977528904}

@@ -15,23 +15,12 @@ public class changeuniverse : MonoBehaviour
     GameObject obstacles;
     bool foundTaggedchild = false;
     bool foundTaggedchild2 = false;
-
-
     bool turnoffcolliders2 = false;
     public bool blackuniverse = false;
-    void Start()
-    {
-/*        float r = 0.5f;
-        float g = 0.8f;
-        float b = 0.2f;
-        float a = 0.7f;
 
-        Color customColor = new Color(r, g, b, a);
-        Renderer renderer = GetComponent<Renderer>();
-        if(renderer != null )
-        {
-            renderer.material.color = customColor;
-        }*/
+    
+    void Start()
+    { 
     }
     private void Update()
     {
@@ -47,7 +36,7 @@ public class changeuniverse : MonoBehaviour
             {
 /*                Debug.Log("No with tag " + tagtoCheck2);
 */            }
-            worldtransp();
+            blackworld();
         }
         if (player.worldiswhite)
         {
@@ -62,49 +51,64 @@ public class changeuniverse : MonoBehaviour
             {
 /*                Debug.Log("No with tag " + tagtoCheck2);
 */            }
-            worldtransp1();
+            whiteworld();
         }
 
 
     }
-    private void worldtransp()
+    private void blackworld()
     {
             GameObject[] whiteObstaclesArray = GameObject.FindGameObjectsWithTag("whiteobstacles");
             foreach (GameObject obstacle in whiteObstaclesArray)
             {
                 TilemapCollider2D whiteObstaclesCollider = obstacle.GetComponent<TilemapCollider2D>();
-                if (whiteObstaclesCollider != null)
+                TilemapRenderer tilemapRenderer = obstacle.GetComponent<TilemapRenderer>();
+
+            if (whiteObstaclesCollider != null)
                 {
-                    whiteObstaclesCollider.enabled = false;
+                //WHITE TRANSP
+                tilemapRenderer.material.color = new Color(255f/255f, 255f/255f,255f/255f,0.01f);
+                whiteObstaclesCollider.enabled = false;
                 }
             }
         GameObject[] blackObstaclesArray = GameObject.FindGameObjectsWithTag("blackobstacles");
         foreach (GameObject obstacle in blackObstaclesArray)
         {
             TilemapCollider2D blackObstaclesCollider = obstacle.GetComponent <TilemapCollider2D>();
-            if(blackObstaclesCollider != null)
+            TilemapRenderer tilemapRenderer = obstacle.GetComponent<TilemapRenderer>();
+            if (blackObstaclesCollider != null)
             {
+                // NORMAL BLACK
+                tilemapRenderer.material.color = new Color(0f/255f,0f/255f,0f/255f,1f);
                 blackObstaclesCollider.enabled = true;
             }
         }
     }
-    private void worldtransp1()
+    private void whiteworld()
     {
         GameObject[] whiteObstaclesArray = GameObject.FindGameObjectsWithTag("whiteobstacles");
+        
         foreach (GameObject obstacle in whiteObstaclesArray)
         {
+           
             TilemapCollider2D whiteObstaclesCollider = obstacle.GetComponent<TilemapCollider2D>();
+            TilemapRenderer tilemapRenderer = obstacle.GetComponent<TilemapRenderer>();
             if (whiteObstaclesCollider != null)
             {
-                whiteObstaclesCollider.enabled = true ;
+                //NORMAL WHITE
+                tilemapRenderer.material.color = new Color(255f/255f,255f/255f,255F/255f,1f);
+                whiteObstaclesCollider.enabled = true;
             }
         }
         GameObject[] blackObstaclesArray = GameObject.FindGameObjectsWithTag("blackobstacles");
         foreach (GameObject obstacle in blackObstaclesArray)
         {
             TilemapCollider2D blackObstaclesCollider = obstacle.GetComponent<TilemapCollider2D>();
+            TilemapRenderer tilemapRenderer = obstacle.GetComponent<TilemapRenderer>();
             if (blackObstaclesCollider != null)
             {
+                //BLACK TRANSP
+                tilemapRenderer.material.color = new Color(0f/255f,0f/255f, 0f/255f,0.05f);
                 blackObstaclesCollider.enabled = false;
             }
         }
