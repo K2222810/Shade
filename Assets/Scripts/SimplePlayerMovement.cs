@@ -9,8 +9,8 @@ using UnityEngine.InputSystem.Utilities;
 public class SimplePlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
-    bool isFacingRight = true;  
-
+    bool isFacingRight = true;
+    public ParticleSystem smokeFX;
     //Shade Colors
     private bool changetoblack = false;
     private bool changetowhite = false;
@@ -129,7 +129,7 @@ public class SimplePlayerMovement : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
                 jumpsReamaning--;
-                animator.SetTrigger("jump");
+                JumpFX();
 
             }
             else if (context.canceled)
@@ -137,7 +137,7 @@ public class SimplePlayerMovement : MonoBehaviour
                 //light tap of jump button = half the height
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
                 jumpsReamaning--;
-                animator.SetTrigger("jump");
+                JumpFX();
             }
         }
 
@@ -147,6 +147,7 @@ public class SimplePlayerMovement : MonoBehaviour
             isWallJumping = true;
             rb.velocity = new Vector2(wallJumpDirection * wallJumpPower.x, wallJumpPower.y); // jump away from wall
             wallJumpTimer = 0;
+            JumpFX();
 
             //force flip
             if (transform.localScale.x != wallJumpDirection) 
@@ -160,6 +161,13 @@ public class SimplePlayerMovement : MonoBehaviour
         
         }
     }
+
+    private void JumpFX()
+    {
+        animator.SetTrigger("jump");
+        smokeFX.Play();
+    }    
+
 
     // checks the ground,
     private void GroundCheck() 
@@ -222,6 +230,12 @@ public class SimplePlayerMovement : MonoBehaviour
             Vector3 ls = transform.localScale;
             ls.x *= -1f;
             transform.localScale = ls;
+
+            if(rb.velocity.y == 0)
+            {
+                smokeFX.Play();
+            }
+
         }
     }
 
