@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEditor.Animations;
+using UnityEngine.InputSystem.Utilities;
 
 public class SimplePlayerMovement : MonoBehaviour
 {
@@ -50,6 +51,9 @@ public class SimplePlayerMovement : MonoBehaviour
     public float wallSlideSpeed = 2;
     bool isWallSliding;
 
+    //Animation
+    public Animator animator; 
+
     //wall jumping
 
     bool isWallJumping;
@@ -66,7 +70,7 @@ public class SimplePlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
+
         ChangeUniversecontext();
         // It chekcs if there is any ground in the floor,if not the player doesnt jump again(unles it has double jump).
         GroundCheck();
@@ -85,6 +89,9 @@ public class SimplePlayerMovement : MonoBehaviour
             flip();
         }
 
+        animator.SetFloat("yVelocity" , rb.velocity.y);
+        animator.SetFloat("Magnitud", rb.velocity.magnitude);
+        animator.SetBool("IsWallSliding", isWallSliding );
     }
 
     private void Gravity()
@@ -97,7 +104,7 @@ public class SimplePlayerMovement : MonoBehaviour
         else 
         {
             rb.gravityScale = baseGravity;
-         
+            
         }
     }
 
@@ -121,13 +128,16 @@ public class SimplePlayerMovement : MonoBehaviour
             if (context.performed)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
-                jumpsReamaning--; 
+                jumpsReamaning--;
+                animator.SetTrigger("jump");
+
             }
             else if (context.canceled)
             {   
                 //light tap of jump button = half the height
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
                 jumpsReamaning--;
+                animator.SetTrigger("jump");
             }
         }
 
