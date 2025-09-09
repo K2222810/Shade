@@ -22,6 +22,13 @@ public class SimplePlayerMovement : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 5f;
     float horizontalMovement;
+    [Header("Dashing")]
+    public float dashSpeed = 20f;
+    public float dashDuration = 0.1f;
+    public float dashCooldown = 0.1f;
+    bool isDashing;
+    bool canDash = true;
+    TrailRenderer trainlRender; 
 
     [Header("Jumping")]
     public float jumpPower = 10f;
@@ -67,10 +74,21 @@ public class SimplePlayerMovement : MonoBehaviour
     public float maxFallSpeed = 18f;
     public float fallSpeedMultiplier = 2f;
 
-
+    private void Start()
+    {
+        trainlRender = GetComponent<TrailRenderer>();
+    }
     void Update()
     {
 
+        animator.SetFloat("yVelocity", rb.velocity.y);
+        animator.SetFloat("Magnitud", rb.velocity.magnitude);
+        animator.SetBool("IsWallSliding", isWallSliding);
+
+        if (isDashing)
+        {
+            return;
+        }
         ChangeUniversecontext();
         // It chekcs if there is any ground in the floor,if not the player doesnt jump again(unles it has double jump).
         GroundCheck();
@@ -89,9 +107,6 @@ public class SimplePlayerMovement : MonoBehaviour
             flip();
         }
 
-        animator.SetFloat("yVelocity" , rb.velocity.y);
-        animator.SetFloat("Magnitud", rb.velocity.magnitude);
-        animator.SetBool("IsWallSliding", isWallSliding );
     }
 
     private void Gravity()
@@ -119,6 +134,38 @@ public class SimplePlayerMovement : MonoBehaviour
         {
 /*            Debug.Log(" Walking stopped");
 */        }
+    }
+
+    public void Dash(InputAction.CallbackContext context)
+    {
+        if (context.performed && canDash)
+        {
+            StartCoroutine(DashCoroutine()); 
+        }
+    }
+
+    private IEnumerator DashCoroutine()
+    { 
+        Physics2D.IgnoreLayerCollision(7,8,true);
+        canDash = false;    
+        isDashing = true;
+        trainlRender.emitting = true;
+        
+        float dashDirection = isFacingRight ? 1f : -1f; 
+            
+        rb.velocity = new Vector2(dashDirection * dashSpeed,rb.velocity.y); //dash movement
+
+        yield return new WaitForSeconds(dashDirection);
+
+        rb.velocity = new Vector2(0f, rb.velocity.y); //Reset horinzontal Velocity
+        
+        isDashing = false;
+        trainlRender.emitting = false;
+        Physics2D.IgnoreLayerCollision(7, 8, false);
+
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+
     }
 
     public void Jump(InputAction.CallbackContext context)

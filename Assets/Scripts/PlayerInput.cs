@@ -63,6 +63,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""208b240f-c040-4939-9a8b-ce4abfdec11a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -153,6 +162,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Hold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""967c4819-4617-488a-9415-174c25dfbfd2"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d16ff6c-36a0-44a2-82fb-0ca2a7f762ad"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -165,6 +196,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerController_Jump = m_PlayerController.FindAction("Jump", throwIfNotFound: true);
         m_PlayerController_ChangeUniverse = m_PlayerController.FindAction("ChangeUniverse", throwIfNotFound: true);
         m_PlayerController_Hold = m_PlayerController.FindAction("Hold", throwIfNotFound: true);
+        m_PlayerController_dash = m_PlayerController.FindAction("dash", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -235,6 +267,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerController_Jump;
     private readonly InputAction m_PlayerController_ChangeUniverse;
     private readonly InputAction m_PlayerController_Hold;
+    private readonly InputAction m_PlayerController_dash;
     public struct PlayerControllerActions
     {
         private @PlayerInput m_Wrapper;
@@ -243,6 +276,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_PlayerController_Jump;
         public InputAction @ChangeUniverse => m_Wrapper.m_PlayerController_ChangeUniverse;
         public InputAction @Hold => m_Wrapper.m_PlayerController_Hold;
+        public InputAction @dash => m_Wrapper.m_PlayerController_dash;
         public InputActionMap Get() { return m_Wrapper.m_PlayerController; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -264,6 +298,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Hold.started += instance.OnHold;
             @Hold.performed += instance.OnHold;
             @Hold.canceled += instance.OnHold;
+            @dash.started += instance.OnDash;
+            @dash.performed += instance.OnDash;
+            @dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IPlayerControllerActions instance)
@@ -280,6 +317,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Hold.started -= instance.OnHold;
             @Hold.performed -= instance.OnHold;
             @Hold.canceled -= instance.OnHold;
+            @dash.started -= instance.OnDash;
+            @dash.performed -= instance.OnDash;
+            @dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IPlayerControllerActions instance)
@@ -303,5 +343,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnChangeUniverse(InputAction.CallbackContext context);
         void OnHold(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
 }

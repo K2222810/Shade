@@ -6,18 +6,28 @@ public class Enemy : MonoBehaviour
     private Transform player;
     public float chaseSpeed;
     public float jumpForce;
-    public int  damage = 1; 
+    public int damage = 1;
+
+    public int maxHealth = 3;
+    private int currentHealth;
+    private SpriteRenderer spriteRenderer;
+    private Color ogColor;
 
     public LayerMask groundLayer;
     private Rigidbody2D rb;
     private bool isGrounded;
-    private bool isJumping; 
+    private bool isJumping;
+
+    [Header("Loot")]
+    public List<LootItem> lootTable = new List<LootItem>(); 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindWithTag("Player").GetComponent<Transform>();
-        
+        currentHealth = maxHealth;
+        ogColor = spriteRenderer.color; 
     }
 
     // Update is called once per frame
@@ -69,4 +79,44 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damage)
+    { 
+        currentHealth -= damage;
+        StartCoroutine(FlashWhite()); 
+        if (currentHealth <= 0) 
+        {
+            Die();
+        }
+    }
+    public IEnumerator FlashWhite()
+    {
+       
+        spriteRenderer.color = Color.white;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = ogColor;
+    }
+
+    void Die() 
+    {
+        foreach (LootItem lootItem in lootTable)
+        {
+            if (Random.Range(0f, 100f) <= lootItem.dropChance)
+            {
+                InstantiateLoot(lootItem.itemPrefab);
+            }
+            break; 
+        }
+
+        Destroy(gameObject);
+    }
+
+    void InstantiateLoot(GameObject loot)
+    {
+        if (loot)
+        {
+            GameObject droppedLoot = Instantiate(loot, transform.position, Quaternion.identity);
+
+            droppedLoot.GetComponent<SpriteRenderer>().color = Color.red;
+        }
+    }
 }
