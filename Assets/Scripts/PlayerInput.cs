@@ -72,6 +72,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Drop"",
+                    ""type"": ""Button"",
+                    ""id"": ""c97ce21d-d666-4771-b71a-545ad86d2adc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -184,6 +193,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9d6e315-9419-4bb8-8d52-f5efcc935be1"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d2198e2-0856-410f-b023-53bb1aa1ccc0"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -197,6 +228,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerController_ChangeUniverse = m_PlayerController.FindAction("ChangeUniverse", throwIfNotFound: true);
         m_PlayerController_Hold = m_PlayerController.FindAction("Hold", throwIfNotFound: true);
         m_PlayerController_dash = m_PlayerController.FindAction("dash", throwIfNotFound: true);
+        m_PlayerController_Drop = m_PlayerController.FindAction("Drop", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -268,6 +300,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerController_ChangeUniverse;
     private readonly InputAction m_PlayerController_Hold;
     private readonly InputAction m_PlayerController_dash;
+    private readonly InputAction m_PlayerController_Drop;
     public struct PlayerControllerActions
     {
         private @PlayerInput m_Wrapper;
@@ -277,6 +310,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @ChangeUniverse => m_Wrapper.m_PlayerController_ChangeUniverse;
         public InputAction @Hold => m_Wrapper.m_PlayerController_Hold;
         public InputAction @dash => m_Wrapper.m_PlayerController_dash;
+        public InputAction @Drop => m_Wrapper.m_PlayerController_Drop;
         public InputActionMap Get() { return m_Wrapper.m_PlayerController; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -301,6 +335,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @dash.started += instance.OnDash;
             @dash.performed += instance.OnDash;
             @dash.canceled += instance.OnDash;
+            @Drop.started += instance.OnDrop;
+            @Drop.performed += instance.OnDrop;
+            @Drop.canceled += instance.OnDrop;
         }
 
         private void UnregisterCallbacks(IPlayerControllerActions instance)
@@ -320,6 +357,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @dash.started -= instance.OnDash;
             @dash.performed -= instance.OnDash;
             @dash.canceled -= instance.OnDash;
+            @Drop.started -= instance.OnDrop;
+            @Drop.performed -= instance.OnDrop;
+            @Drop.canceled -= instance.OnDrop;
         }
 
         public void RemoveCallbacks(IPlayerControllerActions instance)
@@ -344,5 +384,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnChangeUniverse(InputAction.CallbackContext context);
         void OnHold(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnDrop(InputAction.CallbackContext context);
     }
 }

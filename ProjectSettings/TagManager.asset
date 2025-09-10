@@ -8,6 +8,7 @@ TagManager:
   - whiteuniverse
   - whiteobstacles
   - blackobstacles
+  - Platform
   layers:
   - Default
   - TransparentFX

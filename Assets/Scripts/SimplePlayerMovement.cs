@@ -5,12 +5,15 @@ using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEditor.Animations;
 using UnityEngine.InputSystem.Utilities;
+using UnityEditor.Rendering.LookDev;
 
 public class SimplePlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
     bool isFacingRight = true;
     public ParticleSystem smokeFX;
+    BoxCollider2D playerCollider; 
+
     //Shade Colors
     private bool changetoblack = false;
     private bool changetowhite = false;
@@ -22,6 +25,7 @@ public class SimplePlayerMovement : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 5f;
     float horizontalMovement;
+    bool isOnPlatform; 
     [Header("Dashing")]
     public float dashSpeed = 20f;
     public float dashDuration = 0.1f;
@@ -77,6 +81,7 @@ public class SimplePlayerMovement : MonoBehaviour
     private void Start()
     {
         trainlRender = GetComponent<TrailRenderer>();
+        playerCollider = GetComponent<BoxCollider2D>();  
     }
     void Update()
     {
@@ -126,15 +131,35 @@ public class SimplePlayerMovement : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         horizontalMovement = context.ReadValue<Vector2>().x;
-        if(context.performed)
-        {
-/*            Debug.Log(" Walking working");
-*/        }
-        if (context.canceled)
-        {
-/*            Debug.Log(" Walking stopped");
-*/        }
+     
     }
+    public void Drop(InputAction.CallbackContext context)
+    {
+        if (context.performed && isGrounded && isOnPlatform && playerCollider.enabled)
+        {
+            StartCoroutine(DisablePlayerCollider(0.25f));
+        }
+    }
+    private IEnumerator DisablePlayerCollider(float disableTime)
+    { 
+        playerCollider.enabled = false;
+        yield return new WaitForSeconds(disableTime);       
+        playerCollider.enabled = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("whiteobstacles"))
+        { 
+            isOnPlatform = true;
+        }
+        if (collision.gameObject.CompareTag("blackobstacles"))
+        {
+            isOnPlatform = true;
+        }
+
+    }
+
 
     public void Dash(InputAction.CallbackContext context)
     {
