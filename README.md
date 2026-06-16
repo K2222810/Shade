@@ -3,15 +3,12 @@
 A beginner-friendly game where a boy can jump between dimensions. Inspired by Geometry Dash and Limbo.
 
 ## Screenshot/Logo
-Add a screenshot or gameplay image here.
+https://www.youtube.com/watch?v=3HiHeiucQqQ&source_ve_path=MjM4NTE&embeds_referring_euri=https%3A%2F%2Falejandro-portf.netlify.app%2F
 
 ## Description
 Shade is a game project focused on dimension-jumping gameplay. The player controls a boy who moves between light and shadow dimensions while navigating platforms, avoiding obstacles, and dealing with increasing difficulty.
 
 The project was a useful way to practice game logic, rendering, collision detection, and structuring an interactive browser-based game.
-
-## Deployment Link
-https://www.youtube.com/watch?v=3HiHeiucQqQ&source_ve_path=MjM4NTE&embeds_referring_euri=https%3A%2F%2Falejandro-portf.netlify.app%2F
 
 ## Planning
 Before building, the focus was on designing the gameplay loop and deciding how dimension switching would affect movement and obstacles.
