@@ -11,7 +11,7 @@ Shade is a game project focused on dimension-jumping gameplay. The player contro
 The project was a useful way to practice game logic, rendering, collision detection, and structuring an interactive browser-based game.
 
 ## Deployment Link
-Add a live demo link here if available.
+https://www.youtube.com/watch?v=3HiHeiucQqQ&source_ve_path=MjM4NTE&embeds_referring_euri=https%3A%2F%2Falejandro-portf.netlify.app%2F
 
 ## Planning
 Before building, the focus was on designing the gameplay loop and deciding how dimension switching would affect movement and obstacles.
