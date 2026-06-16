@@ -2,7 +2,7 @@
 
 A beginner-friendly game where a boy can jump between dimensions. Inspired by Geometry Dash and Limbo.
 
-## Screenshot/Logo
+## Gameplay showcase
 https://www.youtube.com/watch?v=3HiHeiucQqQ&source_ve_path=MjM4NTE&embeds_referring_euri=https%3A%2F%2Falejandro-portf.netlify.app%2F
 
 ## Description
